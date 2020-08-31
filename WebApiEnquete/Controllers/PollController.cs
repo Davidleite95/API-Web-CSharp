@@ -14,15 +14,9 @@ namespace WebApiEnquete.Controllers
     {
         private ApiEnqueteEntities db = new ApiEnqueteEntities();
 
-        // GET: Poll
-        public ActionResult Index()
-        {
-            return View(db.poll.ToList());
-        }
-
         [HttpGet]
         [Route("Get")]
-        public Object Get(int id)
+        public JsonResult Get(int id)
         {
             var getPoll = (from p in db.poll
                            where p.poll_id == id
@@ -36,29 +30,8 @@ namespace WebApiEnquete.Controllers
                                o.option_description
                            }).ToList();
 
-            return getPoll;
-        }
-       
-        
-        // GET: Poll/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            poll poll = db.poll.Find(id);
-            if (poll == null)
-            {
-                return HttpNotFound();
-            }
-            return View(poll);
-        }
-
-        // GET: Poll/Create
-        public ActionResult Create()
-        {
-            return View();
+            //return getPoll;
+            return Json(getPoll, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Poll/Create
@@ -78,63 +51,7 @@ namespace WebApiEnquete.Controllers
             return View(poll);
         }
 
-        // GET: Poll/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            poll poll = db.poll.Find(id);
-            if (poll == null)
-            {
-                return HttpNotFound();
-            }
-            return View(poll);
-        }
-
-        // POST: Poll/Edit/5
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "poll_id,poll_description")] poll poll)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(poll).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(poll);
-        }
-
-        // GET: Poll/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            poll poll = db.poll.Find(id);
-            if (poll == null)
-            {
-                return HttpNotFound();
-            }
-            return View(poll);
-        }
-
-        // POST: Poll/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            poll poll = db.poll.Find(id);
-            db.poll.Remove(poll);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
