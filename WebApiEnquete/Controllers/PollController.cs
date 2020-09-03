@@ -33,9 +33,21 @@ namespace WebApiEnquete.Controllers
                                select new
                                {
                                    o.option_id,
-                                   o.option_description
+                                   o.option_description,
                                })
                            }).GroupBy(p => p.poll_id).ToList();
+            try
+            {
+                vote vote = new vote();
+                vote.option_description = "Registrado";
+                db.vote.Add(vote);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
             return Json(getPoll, JsonRequestBehavior.AllowGet);
         }
@@ -49,11 +61,10 @@ namespace WebApiEnquete.Controllers
                            //from j in juncao.DefaultIfEmpty()
                            select new
                            {
-                               views = (from ps in db.poll
-                                        where ps.poll_id == id 
+                               views = (from v in db.vote
                                         select new
                                         {
-                                            ps.poll_id
+                                            v.vote_id
                                         }).Count(),
                                votes = (
                                    from o in db.options
@@ -71,7 +82,7 @@ namespace WebApiEnquete.Controllers
         }
 
         [HttpPost]
-        public JsonResult Poll1(JObject data)
+        public JsonResult Poll1(HttpResponse data)
         {
             dynamic json = data;
             options options = new options()

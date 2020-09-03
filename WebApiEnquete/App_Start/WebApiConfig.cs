@@ -10,7 +10,7 @@ namespace WebApiEnquete
         public static void Register(HttpConfiguration config)
         {
             // Serviços e configuração da API da Web
-            
+
 
             // Rotas da API da Web
             config.MapHttpAttributeRoutes();
@@ -18,12 +18,10 @@ namespace WebApiEnquete
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{id}"
-                //defaults: new { id = RouteParameter.Optional }
+            //defaults: new { id = RouteParameter.Optional }
             );
 
             //config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-            
-
         }
     }
 }
