@@ -16,9 +16,7 @@ namespace WebApiEnquete
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                //defaults: new { controller = "Poll", action = "Get", id = UrlParameter.Optional }
-                defaults: new { controller = "Poll", action = "Get" }
-
+                defaults: new { controller = "Poll", action = "Get", id = UrlParameter.Optional }
             );
         }
     }
