@@ -36,6 +36,21 @@ namespace WebApiEnquete.Controllers
                                    o.option_description,
                                })
                            }).GroupBy(p => p.poll_id).ToList();
+            if (getPoll.Count() != 0)
+            {
+                CreateView();
+                return Json(getPoll, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                throw new HttpException(404, "Not Found");
+            }
+        }
+
+        [HttpGet]
+        //Criar Views
+        public void CreateView()
+        {
             try
             {
                 vote vote = new vote();
@@ -48,10 +63,10 @@ namespace WebApiEnquete.Controllers
 
                 throw;
             }
-
-            return Json(getPoll, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [Route("stats")]
         public JsonResult stats(int id)
         {
             var getPoll = (from p in db.poll
@@ -82,7 +97,7 @@ namespace WebApiEnquete.Controllers
         }
 
         [HttpPost]
-        public JsonResult Poll1(HttpResponse data)
+        public JsonResult poll(HttpResponse data)
         {
             dynamic json = data;
             options options = new options()
@@ -97,78 +112,6 @@ namespace WebApiEnquete.Controllers
             //return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "poll_id,poll_description")] poll poll)
-        {
-            if (ModelState.IsValid)
-            {
-                db.poll.Add(poll);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(poll);
-        }
-
-        public JsonResult TesteReturn()
-        {
-            string json = @"{
-                              'channel': {
-                                'title': 'James Newton-King',
-                                'link': 'http://james.newtonking.com',
-                                'description': 'James Newton-King\'s blog.',
-                                'item': [
-                                  {
-                                    'title': 'Json.NET 1.3 + New license + Now on CodePlex',
-                                    'description': 'Announcing the release of Json.NET 1.3, the MIT license and the source on CodePlex',
-                                    'link': 'http://james.newtonking.com/projects/json-net.aspx',
-                                    'category': [
-                                      'Json.NET',
-                                      'CodePlex'
-                                    ]
-                                  },
-                                  {
-                                    'title': 'LINQ to JSON beta',
-                                    'description': 'Announcing LINQ to JSON',
-                                    'link': 'http://james.newtonking.com/projects/json-net.aspx',
-                                    'category': [
-                                      'Json.NET',
-                                      'LINQ'
-                                    ]
-                                  }
-                                ]
-                              }
-                            }";
-
-            JObject rss = JObject.Parse(json);
-
-            var postTitles =
-                from p in rss["channel"]["item"]
-                select (string)p["title"];
-
-            foreach (var item in postTitles)
-            {
-                Console.WriteLine(item);
-            }
-            //LINQ to JSON beta
-            //Json.NET 1.3 + New license + Now on CodePlex
-
-            var categories =
-                from c in rss["channel"]["item"].Children()["category"].Values<string>()
-                group c by c
-                into g
-                orderby g.Count() descending
-                select new { Category = g.Key, Count = g.Count() };
-
-            foreach (var c in categories)
-            {
-                Console.WriteLine(c.Category + " - Count: " + c.Count);
-            }
-
-            return Json(categories, JsonRequestBehavior.AllowGet);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -176,6 +119,11 @@ namespace WebApiEnquete.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public string SubmitOrder()
+        {
+            return "ok";
         }
     }
 }

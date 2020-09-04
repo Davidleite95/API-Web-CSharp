@@ -17,7 +17,7 @@ namespace WebApiEnquete
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "{controller}/{id}"
+                routeTemplate: "{controller}"
             //defaults: new { id = RouteParameter.Optional }
             );
 
