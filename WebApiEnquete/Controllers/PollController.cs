@@ -18,7 +18,7 @@ namespace WebApiEnquete.Controllers
     {
         private ApiEnqueteEntities db = new ApiEnqueteEntities();
 
-        //List Poll :id
+        //List Poll :id /OK
         public JsonResult poll(int id)
         {
             var getPoll = (from p in db.poll
@@ -47,7 +47,7 @@ namespace WebApiEnquete.Controllers
             }
         }
 
-        //Create Views
+        //Create Views /OK
         public void CreateView(int id)
         {
             try
@@ -63,7 +63,7 @@ namespace WebApiEnquete.Controllers
             }
         }
 
-        //List Stats :id Poll
+        //List Stats :id Poll /OK
         public JsonResult stats(int id)
         {
             var getPoll = (from p in db.poll
@@ -94,7 +94,7 @@ namespace WebApiEnquete.Controllers
             return Json(getPoll, JsonRequestBehavior.AllowGet);
         }
 
-        //Insert Vote Options
+        //Insert Vote Options /OK
         public void InsertVoteOptions(vote vote)
         {
             try
@@ -103,7 +103,6 @@ namespace WebApiEnquete.Controllers
                 vote1.option_id = vote.option_id;
                 db.vote.Add(vote1);
                 db.SaveChanges();
-
             }
             catch (Exception ex)
             {
@@ -111,9 +110,13 @@ namespace WebApiEnquete.Controllers
             }
         }
 
-        public void InsertPoll(options options)
+        //Insert Vote Poll - PENDENTE
+        public List<options> InsertPoll(options options)
         {
+            List<options> options1 = new List<options>();
+            options1.Add(options);
 
+            return options1;
         }
 
         protected override void Dispose(bool disposing)
