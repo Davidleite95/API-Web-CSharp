@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5680cdc24bdd44b2a128600f2b494d9a" Name="Diagram1">
+      <Diagram DiagramId="44b7ba2497ac4024a198b0384d941cb3" Name="Diagram1">
         <EntityTypeShape EntityType="ApiEnqueteModel.options" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="ApiEnqueteModel.poll" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ApiEnqueteModel.stats" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ApiEnqueteModel.vote" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ApiEnqueteModel.vote" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="ApiEnqueteModel.FK__options__poll_id__4BAC3F29" ManuallyRouted="false" />
-        <AssociationConnector Association="ApiEnqueteModel.FK__vote__option_id__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="ApiEnqueteModel.FK__vote__option_id__60A75C0F" ManuallyRouted="false" />
         <AssociationConnector Association="ApiEnqueteModel.FK__stats__poll_id__5165187F" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

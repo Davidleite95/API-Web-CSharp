@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using WebApiEnquete.Models;
 
@@ -17,8 +18,7 @@ namespace WebApiEnquete.Controllers
     {
         private ApiEnqueteEntities db = new ApiEnqueteEntities();
 
-        [HttpGet]
-        [Route("poll")]
+        //List Poll :id
         public JsonResult poll(int id)
         {
             var getPoll = (from p in db.poll
@@ -38,7 +38,7 @@ namespace WebApiEnquete.Controllers
                            }).GroupBy(p => p.poll_id).ToList();
             if (getPoll.Count() != 0)
             {
-                CreateView();
+                CreateView(id);
                 return Json(getPoll, JsonRequestBehavior.AllowGet);
             }
             else
@@ -47,26 +47,23 @@ namespace WebApiEnquete.Controllers
             }
         }
 
-        [HttpGet]
-        //Criar Views
-        public void CreateView()
+        //Create Views
+        public void CreateView(int id)
         {
             try
             {
-                vote vote = new vote();
-                vote.option_description = "Registrado";
-                db.vote.Add(vote);
+                stats stats = new stats();
+                stats.poll_id = id;
+                db.stats.Add(stats);
                 db.SaveChanges();
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        [HttpGet]
-        [Route("stats")]
+        //List Stats :id Poll
         public JsonResult stats(int id)
         {
             var getPoll = (from p in db.poll
@@ -88,28 +85,35 @@ namespace WebApiEnquete.Controllers
                                    {
                                        o.option_id,
                                        qty = (
-                                                   from os in db.options
-                                                   select new { os.option_id }
+                                               from v in db.vote
+                                               where v.option_id == o.option_id
+                                               select new { v.vote_id }
                                    ).Count()
                                    })
                            }).ToList();
             return Json(getPoll, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult poll(HttpResponse data)
+        //Insert Vote Options
+        public void InsertVoteOptions(vote vote)
         {
-            dynamic json = data;
-            options options = new options()
+            try
             {
-                option_description = json.options
-            };
-            db.options.Add(options);
-            db.SaveChanges();
+                vote vote1 = new vote();
+                vote1.option_id = vote.option_id;
+                db.vote.Add(vote1);
+                db.SaveChanges();
 
-            return Json(options, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException(404, "Not Found"); throw;
+            }
+        }
 
-            //return RedirectToAction("Index");
+        public void InsertPoll(options options)
+        {
+
         }
 
         protected override void Dispose(bool disposing)
@@ -119,11 +123,6 @@ namespace WebApiEnquete.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public string SubmitOrder()
-        {
-            return "ok";
         }
     }
 }

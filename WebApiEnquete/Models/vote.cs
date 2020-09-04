@@ -15,8 +15,7 @@ namespace WebApiEnquete.Models
     public partial class vote
     {
         public int vote_id { get; set; }
-        public string option_description { get; set; }
-        public Nullable<int> option_id { get; set; }
+        public int option_id { get; set; }
     
         public virtual options options { get; set; }
     }

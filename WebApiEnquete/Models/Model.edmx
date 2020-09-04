@@ -32,8 +32,7 @@
             <PropertyRef Name="vote_id" />
           </Key>
           <Property Name="vote_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="option_description" Type="varchar(max)" Nullable="false" />
-          <Property Name="option_id" Type="int" />
+          <Property Name="option_id" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__options__poll_id__4BAC3F29">
           <End Role="poll" Type="Self.poll" Multiplicity="0..1" />
@@ -59,8 +58,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__vote__option_id__4E88ABD4">
-          <End Role="options" Type="Self.options" Multiplicity="0..1" />
+        <Association Name="FK__vote__option_id__60A75C0F">
+          <End Role="options" Type="Self.options" Multiplicity="1" />
           <End Role="vote" Type="Self.vote" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="options">
@@ -84,7 +83,7 @@
             <End Role="poll" EntitySet="poll" />
             <End Role="stats" EntitySet="stats" />
           </AssociationSet>
-          <AssociationSet Name="FK__vote__option_id__4E88ABD4" Association="Self.FK__vote__option_id__4E88ABD4">
+          <AssociationSet Name="FK__vote__option_id__60A75C0F" Association="Self.FK__vote__option_id__60A75C0F">
             <End Role="options" EntitySet="options" />
             <End Role="vote" EntitySet="vote" />
           </AssociationSet>
@@ -102,7 +101,7 @@
           <Property Name="option_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="poll_id" Type="Int32" />
           <NavigationProperty Name="poll" Relationship="Self.FK__options__poll_id__4BAC3F29" FromRole="options" ToRole="poll" />
-          <NavigationProperty Name="vote" Relationship="Self.FK__vote__option_id__4E88ABD4" FromRole="options" ToRole="vote" />
+          <NavigationProperty Name="vote" Relationship="Self.FK__vote__option_id__60A75C0F" FromRole="options" ToRole="vote" />
         </EntityType>
         <EntityType Name="poll">
           <Key>
@@ -126,9 +125,8 @@
             <PropertyRef Name="vote_id" />
           </Key>
           <Property Name="vote_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="option_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="option_id" Type="Int32" />
-          <NavigationProperty Name="options" Relationship="Self.FK__vote__option_id__4E88ABD4" FromRole="vote" ToRole="options" />
+          <Property Name="option_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="options" Relationship="Self.FK__vote__option_id__60A75C0F" FromRole="vote" ToRole="options" />
         </EntityType>
         <Association Name="FK__options__poll_id__4BAC3F29">
           <End Role="poll" Type="Self.poll" Multiplicity="0..1" />
@@ -142,8 +140,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__vote__option_id__4E88ABD4">
-          <End Role="options" Type="Self.options" Multiplicity="0..1" />
+        <Association Name="FK__vote__option_id__60A75C0F">
+          <End Role="options" Type="Self.options" Multiplicity="1" />
           <End Role="vote" Type="Self.vote" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="options">
@@ -175,7 +173,7 @@
             <End Role="poll" EntitySet="poll" />
             <End Role="options" EntitySet="options" />
           </AssociationSet>
-          <AssociationSet Name="FK__vote__option_id__4E88ABD4" Association="Self.FK__vote__option_id__4E88ABD4">
+          <AssociationSet Name="FK__vote__option_id__60A75C0F" Association="Self.FK__vote__option_id__60A75C0F">
             <End Role="options" EntitySet="options" />
             <End Role="vote" EntitySet="vote" />
           </AssociationSet>
@@ -219,7 +217,6 @@
             <EntityTypeMapping TypeName="ApiEnqueteModel.vote">
               <MappingFragment StoreEntitySet="vote">
                 <ScalarProperty Name="vote_id" ColumnName="vote_id" />
-                <ScalarProperty Name="option_description" ColumnName="option_description" />
                 <ScalarProperty Name="option_id" ColumnName="option_id" />
               </MappingFragment>
             </EntityTypeMapping>
