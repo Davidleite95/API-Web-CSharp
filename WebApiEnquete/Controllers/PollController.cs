@@ -47,19 +47,56 @@ namespace WebApiEnquete.Controllers
             }
         }
 
-        //Create Views /OK
-        public void CreateView(int id)
+        //Insert Poll - /OK
+        public JsonResult pollCreate(poll poll)
+        {
+            //List<options> options1 = new List<options>();
+            //options1.Add(options);
+
+            int poll_id;
+            try
+            {
+                // Insere nova Poll
+                poll newPoll = new poll();
+                newPoll.poll_description = poll.poll_description;
+                db.poll.Add(newPoll);
+                db.SaveChanges();
+                poll_id = newPoll.poll_id;
+
+                // Insere Opções
+                foreach (options option in poll.options)
+                {
+                    options newOption = new options();
+                    newOption.poll_id = poll_id;
+                    newOption.option_description = option.option_description;
+                    db.options.Add(newOption);
+                    db.SaveChanges();
+                }
+
+                return Json("poll_id: " + poll_id, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException(404, "Not Found"); throw;
+            }
+
+            //return options1;
+
+        }
+
+        //Insert Vote Options /OK
+        public void vote(vote vote)
         {
             try
             {
-                stats stats = new stats();
-                stats.poll_id = id;
-                db.stats.Add(stats);
+                vote vote1 = new vote();
+                vote1.option_id = vote.option_id;
+                db.vote.Add(vote1);
                 db.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new HttpException(404, "Not Found"); throw;
             }
         }
 
@@ -94,29 +131,20 @@ namespace WebApiEnquete.Controllers
             return Json(getPoll, JsonRequestBehavior.AllowGet);
         }
 
-        //Insert Vote Options /OK
-        public void InsertVoteOptions(vote vote)
+        //Create Views /OK
+        public void CreateView(int id)
         {
             try
             {
-                vote vote1 = new vote();
-                vote1.option_id = vote.option_id;
-                db.vote.Add(vote1);
+                stats stats = new stats();
+                stats.poll_id = id;
+                db.stats.Add(stats);
                 db.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new HttpException(404, "Not Found"); throw;
+                throw;
             }
-        }
-
-        //Insert Vote Poll - PENDENTE
-        public List<options> InsertPoll(options options)
-        {
-            List<options> options1 = new List<options>();
-            options1.Add(options);
-
-            return options1;
         }
 
         protected override void Dispose(bool disposing)
