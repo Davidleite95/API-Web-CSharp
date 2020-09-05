@@ -110,13 +110,35 @@ namespace WebApiEnquete.Controllers
             }
         }
 
-        //Insert Vote Poll - PENDENTE
-        public List<options> InsertPoll(options options)
+        //Insert Poll - PENDENTE
+        public JsonResult InsertPoll(poll poll)
         {
-            List<options> options1 = new List<options>();
-            options1.Add(options);
+            int poll_id;
+            try
+            {
+                // Insere nova Poll
+                poll newPoll = new poll();
+                newPoll.poll_description = poll.poll_description;
+                db.poll.Add(newPoll);
+                db.SaveChanges();
+                poll_id = newPoll.poll_id;
 
-            return options1;
+                // Insere Opções
+                foreach (options option in poll.options)
+                {
+                    options newOption = new options();
+                    newOption.poll_id = poll_id;
+                    newOption.option_description = option.option_description;
+                    db.options.Add(newOption);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException(404, "Not Found"); throw;
+            }
+
+            return Json(poll_id, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)
